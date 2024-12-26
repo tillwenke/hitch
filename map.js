@@ -195,6 +195,26 @@ var DonateButton = L.Control.extend({
     }
 });
 
+// Add a new menu link to trigger filtering by nickname "Bob"
+var FilterBobButton = L.Control.extend({
+    options: {
+        position: 'topleft'
+    },
+    onAdd: function (map) {
+        var controlDiv = L.DomUtil.create('div', 'leaflet-bar horizontal-button filter-bob');
+        var container = L.DomUtil.create('a', '', controlDiv);
+        container.href = "javascript:void(0);";
+        container.innerHTML = "👤 Filter Bob";
+
+        container.onclick = function (e) {
+            filterByNickname("Bob");
+            L.DomEvent.stopPropagation(e)
+        }
+
+        return controlDiv;
+    }
+});
+
 // let backpane = map.createPane('back')
 // L.imageOverlay('map2.svg', [[-58.49860999999993,-179.9999899999999],[83.62360000,179.99999000000003]], {pane: 'back'}).addTo(map);
 
@@ -309,6 +329,7 @@ map.addControl(new AddSpotButton());
 map.addControl(new RouteButton());
 map.addControl(new RouteViewButton());
 map.addControl(new CancelRouteButton());
+map.addControl(new FilterBobButton());
 
 var zoom = $$('.leaflet-control-zoom')
 zoom.parentNode.appendChild(zoom)
@@ -682,6 +703,18 @@ function exportAsGPX() {
         downloadGPX(gpxStr)
     }
     document.body.appendChild(script)
+}
+
+// Implement a filtering function to filter points by nickname "Bob"
+function filterByNickname(nickname) {
+    for (let marker of allMarkers) {
+        let row = marker.options._row;
+        if (row[3] && row[3].includes(nickname)) {
+            marker.setStyle({ display: 'block' });
+        } else {
+            marker.setStyle({ display: 'none' });
+        }
+    }
 }
 
 // $$('.report-button').onclick = _ => $$('.report-options').classList.toggle('.visible')

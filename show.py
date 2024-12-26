@@ -79,7 +79,7 @@ for island in islands:
 
     if len(parents) == 1:
         for node in island:
-            if node != parents[0]:
+            if (node != parents[0]):
                 replace_map[node] = parents[0]
 
 print("Currently recorded duplicate spots are represented by: ", dups)
@@ -97,7 +97,7 @@ points.loc[points.id.isin(range(1000000, 1040000)), "comment"] = (
 )
 
 points["datetime"] = pd.to_datetime(points.datetime)
-points["ride_datetime"] = pd.to_datetime(points.ride_datetime, errors = 'coerce') # handels invalid dates
+points["ride_datetime"] = pd.to_datetime(points.ride_datetime, errors = 'coerce') # handles invalid dates
 
 rads = points[["lon", "lat", "dest_lon", "dest_lat"]].values.T
 
